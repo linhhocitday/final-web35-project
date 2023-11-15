@@ -1,0 +1,77 @@
+.addProjectContainer {
+  border-radius: 16px;
+  box-shadow: 0 4px 12px 0 rgba(100, 204, 197, 0.4);
+  cursor: pointer;
+  position: relative;
+  padding: 28px;
+}
+
+.projectContainer {
+  border-radius: 16px;
+  box-shadow: 0 4px 12px 0 rgba(100, 204, 197, 0.4);
+  cursor: pointer;
+  position: relative;
+}
+
+.projectItem {
+  padding: 28px;
+  height: 100%;
+  width: 100%;
+}
+
+.addText {
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.addIconCircleContainer {
+  max-width: 82px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.addIconCircle {
+  height: 82px;
+  width: 82px;
+  background-color: #edfffd;
+  border-radius: 50%;
+  position: relative;
+}
+
+.addIcon {
+  position: absolute;
+  line-height: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #64ccc5;
+  font-size: 64px;
+  font-weight: 100;
+}
+
+.blankText {
+  margin: 12px 0 48px;
+}
+
+.projectList {
+  margin-top: 20px;
+}
+
+.createdAt {
+  font-size: 14px;
+  color: #176b87;
+}
+
+.dotIcon {
+  position: absolute;
+  right: 28px;
+  top: 28px;
+  padding: 0 12px;
+  margin: 0 -12px;
+}
+
+.projectName {
+  margin: 8px 0;
+  font-weight: 600;
+  font-size: 20px;
+}

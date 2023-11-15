@@ -1,0 +1,219 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+  color: #001c30;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  display: inline-block;
+}
+
+span {
+  display: inline-block;
+}
+
+ul li {
+  list-style: none;
+}
+
+.container {
+  max-width: 1320px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.height-100 {
+  height: 100%;
+}
+
+.flexbox {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.flex-justify {
+  justify-content: space-between;
+}
+
+.flex-align {
+  align-items: center;
+}
+
+.flex-align-justify {
+  align-items: center;
+  justify-content: space-between;
+}
+
+.grid {
+  display: grid;
+}
+
+.grid-5-7 {
+  grid-template: auto / 5fr 7fr;
+}
+
+.grid-repeat-3 {
+  grid-template: auto / repeat(3, 1fr);
+}
+
+.grid-repeat-4 {
+  grid-template: auto / repeat(4, 1fr);
+}
+
+.project-list-grid {
+  grid-template: calc(18.4px + 12px + 82px + 28px * 2) / repeat(4, 1fr);
+}
+
+.grid-gap-20 {
+  grid-gap: 20px;
+}
+
+.font-14 {
+  font-size: 14px;
+}
+
+.font-20 {
+  font-size: 20px;
+}
+
+.font-20 {
+  font-size: 20px;
+}
+
+.font-48 {
+  font-size: 48px;
+}
+
+.font-280 {
+  font-size: 280px;
+}
+
+.font-320 {
+  font-size: 320px;
+}
+
+.line-height-1 {
+  line-height: 1.2em;
+}
+
+.line-height-2 {
+  line-height: 1.8em;
+}
+
+.line-height-3 {
+  line-height: 1.4em;
+}
+
+.main-btn {
+  background-color: #176b87;
+  color: #fff;
+  box-shadow: rgba(100, 204, 197, 0.6) 0px 4px 20px 0px;
+  border: 1px solid #176b87;
+}
+
+.outlined-btn {
+  background-color: #fff;
+  color: #176b87;
+  border: 1px solid #176b87;
+}
+
+.shadow-btn {
+  background-color: #fff;
+  color: #176b87;
+  box-shadow: rgba(100, 204, 197, 0.6) 0px 4px 20px 0px;
+}
+
+.text-align-center {
+  text-align: center;
+}
+
+.flex-justify-center {
+  justify-content: center;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.font-weight-600 {
+  font-weight: 600;
+}
+
+.font-weight-700 {
+  font-weight: 700;
+}
+
+.font-weight-500 {
+  font-weight: 500;
+}
+
+.font-weight-900 {
+  font-weight: 900;
+}
+
+.color-white {
+  color: #fff;
+}
+
+.color-176B87 {
+  color: #176b87;
+}
+
+.color-64CCC5 {
+  color: #64ccc5;
+}
+
+.bg-light-blue {
+  background-color: rgb(219, 255, 251, 0.6);
+}
+
+.relative {
+  position: relative;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.image {
+  background: center no-repeat;
+  background-size: cover;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.bg-text {
+  color: #fff;
+  text-shadow: 0 0 2px #64ccc5;
+}
+
+.header-div {
+  padding: 8px;
+  box-shadow: rgba(23, 107, 135, 0.25) 0px 7px 29px 0px;
+}
+
+.logo {
+  font-size: 24px;
+}
+
+.sign-btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  margin-left: 8px;
+  max-width: 84px;
+}

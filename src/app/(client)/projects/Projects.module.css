@@ -1,0 +1,39 @@
+.projectsContainer {
+  margin: 80px 0;
+}
+
+.blankText {
+  margin: 12px 0 48px;
+}
+
+.projectItemContainer {
+  margin: 40px 0;
+}
+
+.backToPrjListBtn {
+  color: #176b87;
+  padding: 12px;
+  margin: -12px;
+}
+
+.arrowIcon {
+  margin-right: 8px;
+}
+
+.projectTitle {
+  font-size: 28px;
+  color: #176b87;
+  margin: 19px 0 16px;
+}
+
+.functionalityContainer {
+  padding: 24px 24px 32px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px 0 rgba(100, 204, 197, 0.4);
+}
+
+.apiTitle {
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 12px;
+}

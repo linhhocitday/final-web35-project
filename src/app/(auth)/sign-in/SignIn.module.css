@@ -1,0 +1,32 @@
+.backToHomeBtn {
+  color: #176b87;
+  padding: 12px;
+  margin: -12px;
+}
+
+.arrowIcon {
+  margin-right: 8px;
+}
+
+.signInContainer {
+  padding: 40px 0;
+}
+
+.formContainer {
+  padding-top: 20px;
+  text-align: center;
+}
+
+.formTitle {
+  font-size: 20px;
+  margin-bottom: 16px;
+}
+
+.formWrapper {
+  max-width: 540px;
+  width: 100%;
+  margin: 0 auto;
+  box-shadow: 0px 4px 20px 0 rgb(23, 107, 135, 0.24);
+  border-radius: 16px;
+  padding: 40px 32px;
+}

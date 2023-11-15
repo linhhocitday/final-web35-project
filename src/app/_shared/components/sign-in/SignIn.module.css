@@ -1,0 +1,127 @@
+.signUpLink {
+  text-decoration: underline;
+  color: #64ccc5;
+}
+
+.signUpLine {
+  font-size: 14px;
+}
+
+.signInForm {
+  text-align: left;
+}
+
+.inputLabel {
+  font-size: 14px;
+}
+
+.signInInput {
+  width: 100%;
+  border-radius: 8px;
+  border: solid 1px #64ccc5;
+  outline: none;
+  padding: 12px 20px;
+  margin: 12px 0 32px;
+  font-size: 16px;
+}
+
+.signInBtn {
+  width: 100%;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  padding: 12px 20px;
+  margin: 20px 0 24px;
+  background-color: #176b87;
+  font-weight: 600;
+  box-shadow: 0 4px 20px 0 rgba(100, 204, 197, 0.6);
+}
+
+.rememberField {
+  margin: 0 0 4px;
+  font-size: 14px;
+}
+
+.rememberField p {
+  padding-left: 24px;
+}
+
+.checkboxWrapper {
+  position: relative;
+}
+
+.checkboxWrapper input[type="checkbox"] {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translate(0, -50%);
+  opacity: 0;
+}
+
+.fakeCheckbox {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translate(0, -50%);
+  height: 16px;
+  width: 16px;
+  background-color: #edf2f3;
+  border-radius: 2px;
+}
+
+.checkboxWrapper input:checked ~ .fakeCheckbox {
+  background-color: #64ccc5;
+}
+
+.rememberField label {
+  display: inline-block;
+  padding: 8px;
+  margin: -8px;
+  cursor: pointer;
+}
+
+.fakeCheckbox:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.checkboxWrapper input:checked ~ .fakeCheckbox:after {
+  display: block;
+}
+
+.checkboxWrapper .fakeCheckbox:after {
+  left: 5px;
+  width: 4px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+.signInWithGgBtn {
+  width: 100%;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  padding: 10px 20px;
+  margin: 24px 0 32px;
+  background-color: #edf2f3;
+}
+
+.googleIcon {
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  background: center no-repeat;
+  background-size: cover;
+  margin-right: 12px;
+}
+
+.or {
+  text-align: center;
+  font-size: 14px;
+  color: #7d8082;
+}

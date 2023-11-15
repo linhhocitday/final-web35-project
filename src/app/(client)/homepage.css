@@ -1,0 +1,54 @@
+.landing-page-slide1 h1.font-48 {
+  margin-bottom: 12px;
+}
+
+.landing-page-slide1 div.grid-5-7 {
+  grid-gap: 20px;
+}
+
+.landing-page-slide1 div.font-20 {
+  margin-bottom: 44px;
+}
+
+.landing-page-btn {
+  padding: 14px 60px;
+  border-radius: 8px;
+}
+
+.landing-page-slide1 div.right-col {
+  margin: 160px 0 200px;
+}
+
+.landing-page-slide1 div.bg-light-blue {
+  padding: 60px 0;
+  z-index: 111111;
+}
+
+.landing-page-slide1 div.grid-repeat-3 {
+  grid-gap: 180px;
+}
+
+.landing-page-slide1 h2.color-176B87 {
+  margin-bottom: 20px;
+}
+
+.landing-page-slide1 > .container {
+  z-index: 11111;
+}
+
+.left-col div.img-wrapper {
+  left: 0;
+  right: -28%;
+  bottom: 0;
+  z-index: 1111;
+}
+
+.left-col div.img-wrapper div.image {
+  background-size: contain;
+  padding-top: 64%;
+}
+
+.left-col div.bg-text {
+  z-index: 1;
+  top: 40%;
+}
