@@ -66,12 +66,40 @@
   position: absolute;
   right: 28px;
   top: 28px;
-  padding: 0 12px;
-  margin: 0 -12px;
+  padding: 12px 20px;
+  margin: -12px -20px;
 }
 
 .projectName {
   margin: 8px 0;
-  font-weight: 600;
+  font-weight: 500;
   font-size: 20px;
+}
+
+.functionButtons {
+  position: absolute;
+  box-shadow: 0 4px 20px 0 rgba(100, 204, 197, 0.4);
+  border-radius: 8px;
+  background-color: white;
+  top: 58px;
+  right: -12px;
+  text-align: center;
+}
+
+.functionBtn {
+  padding: 12px 32px;
+}
+
+.functionBtnLine {
+  height: 1px;
+  width: 100%;
+  background-color: #c7ecea;
+}
+
+.active {
+  display: block;
+}
+
+.inactive {
+  display: none;
 }

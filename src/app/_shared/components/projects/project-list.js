@@ -1,21 +1,44 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ProjectsAdd from "./projects-add";
 import style from "./Projects.module.css";
 import Link from "next/link";
 import ProjectDotsBtn from "./project-menu-btn";
+import ProjectFunctionBtn from "./project-function-btn";
 
 export default function ProjectList() {
   const [projects, setProjects] = useState([
     { id: 1, name: "Untitled 1", createdAt: "11/09/2023", resources: 2 },
   ]);
 
+  const [dotClicked, setDotClicked] = useState(false);
+
+  const menuRef = useRef();
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (!menuRef.current.contains(e.target)) {
+        setDotClicked(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handler);
+
+    return () => {
+      document.removeEventListener("mousedown", handler);
+    };
+  });
+
+  const handleDotClick = () => {
+    setDotClicked(!dotClicked);
+  };
+
   return (
     <>
       {!projects && (
         <p className={style.blankText}>
-          Oops, it seems that you didn’t have any project
+          Oops, it seems that you did not have any project
         </p>
       )}
 
@@ -39,7 +62,15 @@ export default function ProjectList() {
                   </div>
                 </Link>
 
-                <ProjectDotsBtn />
+                <div ref={menuRef}>
+                  <ProjectDotsBtn handleDotClick={handleDotClick} />
+
+                  {/* {dotClicked && <ProjectFunctionBtn />} */}
+
+                  <ProjectFunctionBtn
+                    active={dotClicked ? style.active : style.inactive}
+                  />
+                </div>
               </div>
             ))}
 

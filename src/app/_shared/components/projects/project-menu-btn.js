@@ -1,10 +1,6 @@
 import style from "./Projects.module.css";
 
-export default function ProjectDotsBtn() {
-  const handleDotClick = () => {
-    console.log("handleDotClick");
-  };
-
+export default function ProjectDotsBtn({ handleDotClick }) {
   return (
     <div className={style.dotIcon} onClick={handleDotClick}>
       <svg
