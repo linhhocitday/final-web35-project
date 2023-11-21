@@ -44,3 +44,23 @@
   background-color: white;
   border: 1px solid #176b87;
 }
+
+.apiContainer .active,
+.apiContainer .inactive {
+  position: absolute;
+  background-color: white;
+  border-radius: 8px;
+  padding: 8px 16px;
+  box-shadow: 0 4px 20px 0 rgba(100, 204, 197, 0.4);
+  top: -180%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.active {
+  visibility: visible;
+}
+
+.inactive {
+  visibility: hidden;
+}

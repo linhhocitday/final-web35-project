@@ -1,12 +1,32 @@
 "use client";
 
+import { useProjectsContext } from "../../hooks/useProjectsContext";
 import style from "./Projects.module.css";
-
-import React from "react";
+import React, { useState } from "react";
 
 export default function ProjectsAdd() {
+  const { projects, setProjects } = useProjectsContext();
+
+  const [untitled, setUntitled] = useState(1);
+
+  const date = new Date();
+  const id = date.getTime();
+  const created = `${date.getDate()}/${
+    date.getMonth() + 1
+  }/${date.getFullYear()}`;
+
   const clicked = () => {
-    console.log("clicked");
+    setUntitled(untitled + 1);
+    setProjects([
+      {
+        id: id,
+        name: `Untitled ${untitled}`,
+        createdAt: created,
+        resources: 0,
+        dotClicked: false,
+      },
+      ...projects,
+    ]);
   };
 
   return (

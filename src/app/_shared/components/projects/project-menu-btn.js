@@ -1,8 +1,11 @@
+import { useProjectsContext } from "../../hooks/useProjectsContext";
 import style from "./Projects.module.css";
 
-export default function ProjectDotsBtn({ handleDotClick }) {
+export default function ProjectDotsBtn({ id }) {
+  const { handleDotClick } = useProjectsContext();
+
   return (
-    <div className={style.dotIcon} onClick={handleDotClick}>
+    <div className={style.dotIcon} onClick={() => handleDotClick(id)}>
       <svg
         width="4"
         height="16"
