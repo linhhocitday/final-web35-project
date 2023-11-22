@@ -6,6 +6,10 @@
   color: #001c30;
 }
 
+::selection {
+  background-color: rgb(102, 204, 197, 0.4);
+}
+
 button {
   cursor: pointer;
 }
@@ -14,6 +18,16 @@ a {
   text-decoration: none;
   color: inherit;
   display: inline-block;
+}
+
+/* a[data-editing="true"] {
+  pointer-events: none;
+} */
+
+input[data-editing="true"] {
+  border-bottom: 1px solid #64ccc5;
+  font-size: 18px;
+  cursor: text;
 }
 
 span {

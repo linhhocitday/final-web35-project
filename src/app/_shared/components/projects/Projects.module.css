@@ -76,6 +76,18 @@
   font-size: 20px;
 }
 
+.projectNameInput {
+  margin: 8px 0;
+  font-weight: 500;
+  font-size: 20px;
+  border: none;
+  outline: none;
+  background-color: inherit;
+  max-width: 249px;
+  width: 100%;
+  cursor: pointer;
+}
+
 .functionButtons {
   position: absolute;
   box-shadow: 0 4px 20px 0 rgba(100, 204, 197, 0.4);
