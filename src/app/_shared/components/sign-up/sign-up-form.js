@@ -3,15 +3,24 @@
 import Link from "next/link";
 import React from "react";
 import { useForm } from "react-hook-form";
-import style from "./SignIn.module.css";
+import style from "./SignUp.module.css";
 
-export default function SignInForm() {
+export default function SignUpForm() {
   const handleSignIn = () => {
     location.href = "/projects";
   };
 
   return (
     <form className={style.signInForm}>
+      <label className="uppercase">
+        <span className={style.inputLabel}>User name:</span>
+        <input
+          type="text"
+          placeholder="Enter your name"
+          className={style.signInInput}
+        />
+      </label>
+
       <label className="uppercase">
         <span className={style.inputLabel}>Email:</span>
         <input
@@ -23,6 +32,15 @@ export default function SignInForm() {
 
       <label className="uppercase">
         <span className={style.inputLabel}>Password:</span>
+        <input
+          type="password"
+          placeholder="Enter your password"
+          className={style.signInInput}
+        />
+      </label>
+
+      <label className="uppercase">
+        <span className={style.inputLabel}>Confirm password:</span>
         <input
           type="password"
           placeholder="Enter your password"
@@ -45,7 +63,7 @@ export default function SignInForm() {
       </div>
 
       <button type="button" className={style.signInBtn} onClick={handleSignIn}>
-        <p className="uppercase color-white">Sign in</p>
+        <p className="uppercase color-white">Sign up</p>
       </button>
 
       <p className={style.or}>or</p>
@@ -64,8 +82,8 @@ export default function SignInForm() {
       </button>
 
       <div className={style.signUpLine}>
-        Do not have an account? Sign up{" "}
-        <Link href={"/sign-up"} className={style.signUpLink}>
+        Already have an account? Sign in{" "}
+        <Link href={"/sign-in"} className={style.signUpLink}>
           here
         </Link>
       </div>

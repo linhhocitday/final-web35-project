@@ -27,7 +27,10 @@ export default function ProjectFunctionBtn({ active }) {
 
   const handleDelete = () => {
     if (confirm("Are you sure you want to delete this project?")) {
-      console.log("deleted");
+      const filtered = projects.filter((project) => {
+        project.id != projects[activeDot].id;
+      });
+      console.log(filtered);
     } else {
       console.log("not deleted");
     }
