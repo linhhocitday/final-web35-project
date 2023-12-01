@@ -25,6 +25,7 @@ export default function ProjectsAdd() {
         resources: 0,
         dotClicked: false,
         isEditing: false,
+        isDeleting: false,
       },
       ...projects,
     ]);

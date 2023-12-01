@@ -31,7 +31,7 @@ export default function SignIn() {
               </svg>
             </div>
 
-            <p className="uppercase color-176B87">Back</p>
+            <p className="uppercase color-176B87">Back to Home</p>
           </div>
         </Link>
 

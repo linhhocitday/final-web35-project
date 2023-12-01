@@ -7,6 +7,7 @@ import ProjectsAdd from "./projects-add";
 import ProjectDotsBtn from "./project-menu-btn";
 import ProjectFunctionBtn from "./project-function-btn";
 import { ProjectsContext } from "../../context/ProjectsContext";
+import DeleteNotice from "./project-delete-notice";
 
 export default function ProjectList() {
   const [projects, setProjects] = useState([]);
@@ -14,8 +15,6 @@ export default function ProjectList() {
   // const [dotClicked, setDotClicked] = useState(false);
 
   const menuRef = useRef();
-
-  const inputRef = useRef();
 
   useEffect(() => {
     const handler = (e) => {
@@ -67,8 +66,6 @@ export default function ProjectList() {
         });
 
         inputEditing.blur();
-
-        console.log(inputEditing);
       }
     };
 
@@ -209,6 +206,8 @@ export default function ProjectList() {
                     active={project.dotClicked ? style.active : style.inactive}
                   />
                 </div>
+
+                {project.isDeleting && <DeleteNotice project={project} />}
               </div>
             ))}
         </div>

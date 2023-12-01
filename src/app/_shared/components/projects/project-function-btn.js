@@ -26,19 +26,10 @@ export default function ProjectFunctionBtn({ active }) {
   };
 
   const handleDelete = () => {
-    if (confirm("Are you sure you want to delete this project?")) {
-      const filtered = projects.filter((project) => {
-        project.id != projects[activeDot].id;
-      });
-      console.log(filtered);
-    } else {
-      console.log("not deleted");
-    }
-
     setProjects((projects) => {
       return projects.map((project) => {
         if (projects[activeDot] && projects[activeDot].id == project.id) {
-          return { ...project, dotClicked: false };
+          return { ...project, dotClicked: false, isDeleting: true };
         }
         return { ...project };
       });
