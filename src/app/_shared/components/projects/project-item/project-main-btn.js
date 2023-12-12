@@ -1,10 +1,12 @@
+"use client";
+
 import style from "./ProjectItem.module.css";
 
-export default function MainButtons() {
+export default function MainButtons({ handleAddResource }) {
   return (
     <div className={style.mainBtnContainer}>
       <div className="flexbox flex-align-justify">
-        <button className={style.newResourceBtn}>
+        <button className={style.newResourceBtn} onClick={handleAddResource}>
           <div className="uppercase color-white">New resource</div>
         </button>
 

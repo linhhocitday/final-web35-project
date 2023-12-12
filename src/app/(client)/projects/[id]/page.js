@@ -1,5 +1,6 @@
 import Link from "next/link";
 import style from "../Projects.module.css";
+import ProjectContent from "@/app/_shared/components/projects/project-item/project-content";
 import ProjectApi from "@/app/_shared/components/projects/project-item/project-api";
 import MainButtons from "@/app/_shared/components/projects/project-item/project-main-btn";
 
@@ -31,20 +32,21 @@ export default async function ProductDetail({ params: { id } }) {
               <p className="uppercase color-176B87">Back</p>
             </div>
           </Link>
-
           <div className="uppercase font-weight-600">
             <h2 className={style.projectTitle}>
               {id} <span className="color-64CCC5">project</span>
             </h2>
           </div>
 
-          <div className={style.functionalityContainer}>
+          <ProjectContent />
+
+          {/* <div className={style.functionalityContainer}>
             <p className={style.apiTitle}>API endpoint</p>
 
             <ProjectApi />
 
             <MainButtons />
-          </div>
+          </div> */}
         </div>
       </div>
     </main>

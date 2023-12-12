@@ -64,3 +64,107 @@
 .inactive {
   visibility: hidden;
 }
+
+.functionalityContainer {
+  padding: 24px 24px 32px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px 0 rgba(100, 204, 197, 0.4);
+  position: relative;
+  z-index: 1;
+  background-color: #fff;
+}
+
+.apiTitle {
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+.resourceContainer {
+  box-shadow: 0 4px 8px 0 rgba(100, 204, 197, 0.6);
+  background-color: #fff;
+  width: fit-content;
+  padding: 20px;
+  border-radius: 16px;
+}
+
+.resourceName {
+  font-size: 16px;
+  font-weight: 500;
+  color: #176b87;
+  margin-bottom: 10px;
+}
+
+.resourceLeftLine {
+  height: 2px;
+  width: 48px;
+  background-color: #64ccc5;
+}
+
+.resourceWrapper {
+  display: flex;
+  align-items: center;
+  margin-top: 40px;
+  /* margin-left: 80px; */
+}
+
+.resourceDataContainer {
+  height: 36px;
+  width: 204px;
+  padding: 2px;
+  border-radius: 8px;
+  background-color: #eef8f6;
+  position: relative;
+}
+
+.resourceDataQuantity {
+  height: 100%;
+  /* width: 100%; */
+  background-color: #64ccc5;
+  border-radius: 8px;
+}
+
+.resourceContentWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.lowEmphasisBtn {
+  background-color: white;
+  border: 1px solid #64ccc5;
+  color: #64ccc5;
+  font-weight: 500;
+  padding: 8px;
+  border-radius: 8px;
+  text-transform: uppercase;
+}
+
+.resourceBtnContainer {
+  margin-left: 8px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+}
+
+.resourceData {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-shadow: white 0.5px 0px, white 0px 0.5px, white 0px -0.5px,
+    white -0.5px 0px;
+  font-weight: 600;
+  color: #176b87;
+}
+
+.resourcesLine {
+  margin-left: 80px;
+  width: 2px;
+  background-color: #64ccc5;
+  top: calc(-105.2px / 2 + 1px);
+  position: relative;
+}
+
+.resourcesContainer {
+  display: flex;
+}

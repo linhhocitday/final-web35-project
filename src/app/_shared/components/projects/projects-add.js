@@ -10,7 +10,8 @@ export default function ProjectsAdd() {
   const [untitled, setUntitled] = useState(1);
 
   const date = new Date();
-  const id = date.getTime();
+  // const id = date.getTime();
+  const id = Date.now().toString(36) + Math.random().toString(36).substr(2);
   const created = `${date.getDate()}/${
     date.getMonth() + 1
   }/${date.getFullYear()}`;
