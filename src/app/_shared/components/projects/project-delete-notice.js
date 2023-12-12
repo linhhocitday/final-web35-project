@@ -62,7 +62,8 @@ export default function DeleteNotice({ project }) {
         </div>
 
         <p className={style.deleteTitle}>
-          Are you sure you want to delete <span>"{project.name}"</span>?
+          Are you sure you want to delete{" "}
+          <span>&quot;{project.name}&quot;</span>?
         </p>
 
         <p className={style.deleteSubTitle}>
