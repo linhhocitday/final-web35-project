@@ -88,10 +88,45 @@
   border-radius: 16px;
 }
 
-.resourceName {
+/* .resourceName {
   font-size: 16px;
   font-weight: 500;
   color: #176b87;
+  margin-right: 12px;
+}
+
+.resourceNameTextbox {
+  font-size: 16px;
+  font-weight: 500;
+  color: #176b87;
+  margin-right: 12px;
+  outline: none;
+  border: none;
+} */
+
+.resourceNameInput {
+  font-size: 16px;
+  font-weight: 500;
+  color: #176b87;
+  margin-right: 12px;
+  outline: none;
+  border: none;
+  width: 100%;
+}
+
+input.resourceNameInput[data-rename="true"] {
+  border-bottom: 1px solid #64ccc5;
+}
+
+.resourceEditNameBtn {
+  cursor: pointer;
+  padding: 8px;
+  margin: -8px;
+}
+
+.resourceNameContainer {
+  display: flex;
+  align-items: center;
   margin-bottom: 10px;
 }
 
@@ -161,7 +196,7 @@
   margin-left: 80px;
   width: 2px;
   background-color: #64ccc5;
-  top: calc(-105.2px / 2 + 1px);
+  top: calc(-108px / 2 + 1px);
   position: relative;
 }
 
