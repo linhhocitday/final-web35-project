@@ -5,6 +5,7 @@ import style from "./ProjectItem.module.css";
 import ProjectApi from "./project-api";
 import MainButtons from "./project-main-btn";
 import { useEffect, useRef, useState } from "react";
+import ResourceAddNotice from "./resource-add-notice";
 
 export default function ProjectContent() {
   const [resources, setResource] = useState([
@@ -18,6 +19,8 @@ export default function ProjectContent() {
     // },
   ]);
   const [untitled, setUntitled] = useState(1);
+
+  const [creatingResource, setCreatingResource] = useState(false);
 
   const resourcesRef = useRef();
 
@@ -55,7 +58,7 @@ export default function ProjectContent() {
     };
   });
 
-  const handleAddResource = () => {
+  const handleCreatingResource = (resourceAdd) => {
     const id = Date.now().toString(36) + Math.random().toString(36).substr(2);
 
     setUntitled(untitled + 1);
@@ -63,12 +66,18 @@ export default function ProjectContent() {
     setResource([
       {
         id: id,
-        name: `Untitled ${untitled}`,
+        name: resourceAdd.name,
         data: [],
         nameEditing: false,
       },
       ...resources,
     ]);
+
+    setCreatingResource(false);
+  };
+
+  const handleAddResource = () => {
+    setCreatingResource(true);
   };
 
   const handleRename = (id) => {
@@ -229,6 +238,14 @@ export default function ProjectContent() {
           ))}
         </div>
       </div>
+
+      {creatingResource && (
+        <ResourceAddNotice
+          handleCreatingResource={handleCreatingResource}
+          setCreatingResource={setCreatingResource}
+          untitled={untitled}
+        />
+      )}
     </div>
   );
 }

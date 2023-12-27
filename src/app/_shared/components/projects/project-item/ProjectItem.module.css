@@ -150,6 +150,7 @@ input.resourceNameInput[data-rename="true"] {
   border-radius: 8px;
   background-color: #eef8f6;
   position: relative;
+  cursor: pointer;
 }
 
 .resourceDataQuantity {
@@ -202,4 +203,178 @@ input.resourceNameInput[data-rename="true"] {
 
 .resourcesContainer {
   display: flex;
+}
+
+.resourceAddNoticeBg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgb(0, 27, 46, 0.2);
+  backdrop-filter: blur(2px);
+  z-index: 1111;
+  cursor: auto;
+}
+
+.resourceAddNoticeContainer {
+  background-color: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 111111111111;
+  /* padding: 24px; */
+  max-width: 800px;
+  width: 100%;
+  border-radius: 16px;
+  max-height: 80vh;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.resourceAddNoticeTitle {
+  padding: 24px;
+}
+
+.xIcon {
+  text-align: right;
+  padding: 12px;
+  margin: -12px;
+  cursor: pointer;
+}
+
+.createResourceTitle {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 20px;
+  font-weight: 500;
+  color: #176b87;
+  margin: 12px 6px 0;
+}
+
+.createResourceTitle span {
+  color: #64ccc5;
+}
+
+.createResourceSubTitle {
+  font-size: 20px;
+  /* text-transform: uppercase; */
+  font-weight: 500;
+  color: #176b87;
+  margin-bottom: 4px;
+}
+
+.createResourceDescribe {
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.createResourceDescribe span {
+  color: #64ccc5;
+}
+
+.createResourceContainer {
+  margin-bottom: 28px;
+}
+
+.createResourceNameInput {
+  width: 100%;
+  border-radius: 8px;
+  background-color: #eef8f6;
+  outline: none;
+  border: none;
+  padding: 12px 20px;
+  font-size: 16px;
+}
+
+.ResourceAddNoticeContent {
+  padding: 24px;
+  height: 80%;
+  overflow-y: auto;
+}
+
+.createBtnContainer {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  padding: 24px;
+  /* position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0; */
+  background-color: #fff;
+}
+
+.createResourceBtn {
+  background-color: #176b87;
+  padding: 12px;
+  border-radius: 8px;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
+  box-shadow: 0 4px 12px 0 rgba(100, 204, 197, 0.6);
+  cursor: pointer;
+  outline: none;
+  border: none;
+}
+
+.cancelCreateResourceBtn {
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 8px;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 500;
+  color: #64ccc5;
+  border: solid 1px #64ccc5;
+  cursor: pointer;
+}
+
+.createResourceSchemaContainer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.addDataBtn {
+  border: 1px solid #176b87;
+  outline: none;
+  /* box-shadow: 0 4px 12px 0 rgb(100, 204, 197, 0.4); */
+  border-radius: 8px;
+  color: #176b87;
+  padding: 12.6px 20px;
+  line-height: 0;
+  text-align: center;
+  cursor: pointer;
+}
+
+.dataName {
+  border: 1px solid #176b87;
+  outline: none;
+  border-radius: 8px;
+  color: #176b87;
+  padding: 12px 20px;
+}
+
+.dataTypes {
+  border-radius: 8px;
+  padding: 12px 20px;
+  border: none;
+  outline: none;
+  background-color: #dafffb;
+  color: #176b87;
+  appearance: none;
+  cursor: pointer;
+}
+
+.dataTypes[disabled] {
+  background-color: #ebfffe;
+  color: #6bb2ca;
+  cursor: no-drop;
 }
