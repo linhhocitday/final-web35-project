@@ -106,6 +106,10 @@ export default function ResourceAddNotice({
     });
   };
 
+  const handleAddData = () => {
+    console.log("added");
+  };
+
   return (
     <div className={style.resourceAddNoticeBg}>
       <div className={style.resourceAddNoticeContainer} ref={createRef}>
@@ -205,7 +209,7 @@ export default function ResourceAddNotice({
               ))}
 
               <li className={style.createResourceSchemaContainer}>
-                <div className={style.addDataBtn}>
+                <div className={style.addDataBtn} onClick={handleAddData}>
                   <svg
                     width="18"
                     height="18"

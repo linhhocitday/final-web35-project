@@ -1,12 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import style from "./SignIn.module.css";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-
+import { useRouter } from "next/navigation";
 const signInForm = z.object({
   email: z.string().trim().email(),
   password: z
@@ -16,6 +16,7 @@ const signInForm = z.object({
 });
 
 export default function SignInForm() {
+  const router = useRouter();
   // const handleSignIn = () => {
   //   location.href = "/projects";
   // };
@@ -26,11 +27,29 @@ export default function SignInForm() {
     formState: { errors },
   } = useForm({ resolver: zodResolver(signInForm) });
 
-  const onSubmit = (data) => {
+  async function onSubmit(data) {
     console.log(data);
 
-    location.href = "/projects";
-  };
+    let result = await fetch(`http://192.168.2.11:8080/api/auth/signin`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({
+        username: data.email,
+        password: data.password,
+      }),
+    });
+
+    result = await result.json();
+
+    localStorage.setItem("token", result.token);
+
+    console.log(result);
+
+    // location.href = "/projects";
+    router.push("/projects");
+  }
 
   return (
     <form className={style.signInForm} onSubmit={handleSubmit(onSubmit)}>

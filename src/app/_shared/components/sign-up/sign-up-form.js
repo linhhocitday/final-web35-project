@@ -6,14 +6,13 @@ import { useForm } from "react-hook-form";
 import style from "./SignUp.module.css";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { data } from "autoprefixer";
 
 const signUpForm = z
   .object({
-    userName: z
-      .string()
-      .min(1, "User name must contain at least 1 character")
-      .max(20, "User name must contain at most 20 characters"),
+    // userName: z
+    //   .string()
+    //   .min(1, "User name must contain at least 1 character")
+    //   .max(20, "User name must contain at most 20 characters"),
     email: z.string().trim().email(),
     password: z
       .string()
@@ -40,15 +39,33 @@ export default function SignUpForm() {
     formState: { errors },
   } = useForm({ resolver: zodResolver(signUpForm) });
 
-  const onSubmit = (data) => {
+  async function onSubmit(data) {
     console.log(data);
 
+    let result = await fetch(`http://192.168.2.11:8080/api/auth/signup`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({
+        username: data.email,
+        email: data.email,
+        password: data.password,
+      }),
+    });
+
+    result = await result.json();
+
+    localStorage.setItem("token", result.token);
+
+    console.log(result);
+
     location.href = "/projects";
-  };
+  }
 
   return (
     <form className={style.signInForm} onSubmit={handleSubmit(onSubmit)}>
-      <label className="uppercase">
+      {/* <label className="uppercase">
         <span className={style.inputLabel}>User name:</span>
 
         <input
@@ -65,7 +82,7 @@ export default function SignUpForm() {
             <p className={style.errorMessage}>*{errors.userName.message}</p>
           )}
         </div>
-      </label>
+      </label> */}
 
       <label className="uppercase">
         <span className={style.inputLabel}>Email:</span>

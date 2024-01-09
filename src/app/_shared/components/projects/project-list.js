@@ -12,6 +12,10 @@ import DeleteNotice from "./project-delete-notice";
 export default function ProjectList() {
   const [projects, setProjects] = useState([]);
 
+  useEffect(() => {
+    const result = fetch("");
+  });
+
   // const [dotClicked, setDotClicked] = useState(false);
 
   const menuRef = useRef();
