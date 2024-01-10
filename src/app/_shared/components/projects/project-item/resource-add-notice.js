@@ -9,7 +9,7 @@ export default function ResourceAddNotice({
   untitled,
 }) {
   const untitledValue = `untitled${untitled}`;
-  // const [nameInput, setNameInput] = useState(untitledValue);
+  const [dataNameCount, setDataNameCount] = useState(1);
   const [resourceAdd, setResourceAdd] = useState({
     name: untitledValue,
     data: {
@@ -107,7 +107,22 @@ export default function ResourceAddNotice({
   };
 
   const handleAddData = () => {
-    console.log("added");
+    console.log(resourceAdd);
+    const key = Date.now().toString(36) + Math.random().toString(36).substr(2);
+
+    setResourceAdd({
+      ...resourceAdd,
+      data: {
+        ...resourceAdd.data,
+        [key]: {
+          name: `untitled${dataNameCount}`,
+          type: "Faker.js",
+          fakerMethod: fakerJs[0],
+        },
+      },
+    });
+
+    setDataNameCount(dataNameCount + 1);
   };
 
   return (
@@ -165,6 +180,7 @@ export default function ResourceAddNotice({
                     value={resourceAdd.data[key].name}
                     className={style.dataName}
                     onChange={(e) => handleChangeDataName(e, key)}
+                    placeholder="Field name"
                   />
 
                   {resourceAdd.data[key].type === "Object ID" ? (

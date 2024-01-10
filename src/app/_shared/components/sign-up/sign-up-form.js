@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import style from "./SignUp.module.css";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { baseURL } from "../../constant/constant";
 
 const signUpForm = z
   .object({
@@ -42,7 +43,7 @@ export default function SignUpForm() {
   async function onSubmit(data) {
     console.log(data);
 
-    let result = await fetch(`http://192.168.2.11:8080/api/auth/signup`, {
+    let result = await fetch(`${baseURL}/api/auth/signup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
@@ -56,7 +57,8 @@ export default function SignUpForm() {
 
     result = await result.json();
 
-    localStorage.setItem("token", result.token);
+    localStorage.setItem("token", JSON.stringify(result.token));
+    localStorage.setItem("userId", JSON.stringify(result.userId));
 
     console.log(result);
 

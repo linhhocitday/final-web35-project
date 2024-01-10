@@ -362,6 +362,10 @@ input.resourceNameInput[data-rename="true"] {
   padding: 12px 20px;
 }
 
+.dataName::placeholder {
+  color: rgb(162, 198, 210);
+}
+
 .dataTypes {
   border-radius: 8px;
   padding: 12px 20px;

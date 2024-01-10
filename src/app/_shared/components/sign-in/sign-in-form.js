@@ -7,6 +7,8 @@ import style from "./SignIn.module.css";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
+import { baseURL } from "../../constant/constant";
+
 const signInForm = z.object({
   email: z.string().trim().email(),
   password: z
@@ -30,7 +32,7 @@ export default function SignInForm() {
   async function onSubmit(data) {
     console.log(data);
 
-    let result = await fetch(`http://192.168.2.11:8080/api/auth/signin`, {
+    let result = await fetch(`${baseURL}/api/auth/signin`, {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
@@ -43,7 +45,8 @@ export default function SignInForm() {
 
     result = await result.json();
 
-    localStorage.setItem("token", result.token);
+    localStorage.setItem("token", JSON.stringify(result.token));
+    localStorage.setItem("userId", JSON.stringify(result.userId));
 
     console.log(result);
 

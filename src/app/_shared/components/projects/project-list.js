@@ -2,19 +2,33 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import style from "./Projects.module.css";
-import Link from "next/link";
 import ProjectsAdd from "./projects-add";
-import ProjectDotsBtn from "./project-menu-btn";
-import ProjectFunctionBtn from "./project-function-btn";
 import { ProjectsContext } from "../../context/ProjectsContext";
-import DeleteNotice from "./project-delete-notice";
+import { baseURL } from "../../constant/constant";
+import Project from "./project";
 
 export default function ProjectList() {
   const [projects, setProjects] = useState([]);
 
   useEffect(() => {
-    const result = fetch("");
-  });
+    async function getProjects() {
+      const userId = JSON.parse(localStorage.getItem("userId"));
+      const token = JSON.parse(localStorage.getItem("token"));
+
+      let result = await fetch(`${baseURL}/api/v1/users/${userId}/projects`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      result = await result.json();
+
+      console.log(result);
+    }
+
+    getProjects();
+  }, []);
 
   // const [dotClicked, setDotClicked] = useState(false);
 
@@ -156,63 +170,7 @@ export default function ProjectList() {
 
           {projects &&
             projects.map((project) => (
-              <div key={project.id} className={style.projectContainer}>
-                <Link
-                  href={project.isEditing ? "" : `/projects/${project.id}`}
-                  className={style.projectItem}
-                  data-editing={project.isEditing ? "true" : "false"}
-                  draggable={project.isEditing ? "false" : "true"}
-                >
-                  <div className="flexbox flex-column flex-justify height-100">
-                    <div>
-                      <p className={style.createdAt}>{project.createdAt}</p>
-
-                      {/* {project.isEditing ? (
-                        <input
-                          type="text"
-                          value={project.name}
-                          className={style.projectNameInput}
-                          onChange={(e) => handleRename(project.id, e)}
-                          onKeyUp={handleEnter}
-                        />
-                      ) : (
-                        <h3 className={style.projectName}>{project.name}</h3>
-                      )} */}
-
-                      {project.isEditing ? (
-                        <input
-                          type="text"
-                          value={project.name}
-                          className={style.projectNameInput}
-                          onChange={(e) => handleRename(project.id, e)}
-                          onKeyUp={(e) => handleEnter(project.id, e)}
-                          data-editing="true"
-                        />
-                      ) : (
-                        <input
-                          type="text"
-                          value={project.name}
-                          className={style.projectNameInput}
-                          readOnly="readOnly"
-                          data-editing="false"
-                        />
-                      )}
-                    </div>
-
-                    <div>{project.resources} resources</div>
-                  </div>
-                </Link>
-                {/* <div ref={menuRef}> */}
-                <div className="menu-btn-wrapper">
-                  <ProjectDotsBtn id={project.id} />
-
-                  <ProjectFunctionBtn
-                    active={project.dotClicked ? style.active : style.inactive}
-                  />
-                </div>
-
-                {project.isDeleting && <DeleteNotice project={project} />}
-              </div>
+              <Project key={project.id} project={project} />
             ))}
         </div>
       </div>
