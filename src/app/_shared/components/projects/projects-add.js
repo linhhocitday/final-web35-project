@@ -2,34 +2,13 @@
 
 import { useProjectsContext } from "../../hooks/useProjectsContext";
 import style from "./Projects.module.css";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-export default function ProjectsAdd() {
-  const { projects, setProjects } = useProjectsContext();
-
-  const [untitled, setUntitled] = useState(1);
-
-  const date = new Date();
-  // const id = date.getTime();
-  const id = Date.now().toString(36) + Math.random().toString(36).substr(2);
-  const created = `${date.getDate()}/${
-    date.getMonth() + 1
-  }/${date.getFullYear()}`;
+export default function ProjectsAdd({ setIsAdding }) {
+  const { apiProjects, setApiProjects } = useProjectsContext();
 
   const clicked = () => {
-    setUntitled(untitled + 1);
-    setProjects([
-      {
-        id: id,
-        name: `Untitled ${untitled}`,
-        createdAt: created,
-        resources: 0,
-        dotClicked: false,
-        isEditing: false,
-        isDeleting: false,
-      },
-      ...projects,
-    ]);
+    setIsAdding(true);
   };
 
   return (

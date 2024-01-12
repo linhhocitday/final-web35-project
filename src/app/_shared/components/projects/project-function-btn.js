@@ -1,39 +1,24 @@
 import React from "react";
 import style from "./Projects.module.css";
-import { useProjectsContext } from "../../hooks/useProjectsContext";
 
-export default function ProjectFunctionBtn({ active }) {
-  const { projects, setProjects, menuRef } = useProjectsContext();
-
-  const activeDot = projects.findIndex((project) => project.dotClicked == true);
-
+export default function ProjectFunctionBtn({
+  active,
+  projectUpdate,
+  setProjectUpdate,
+  menuRef,
+}) {
   const handleRename = () => {
-    setProjects((projects) => {
-      return projects.map((project) => {
-        if (projects[activeDot] && projects[activeDot].id == project.id) {
-          return { ...project, dotClicked: false, isEditing: true };
-        }
-        return { ...project };
-      });
-    });
+    setProjectUpdate({ ...projectUpdate, dotClicked: false, isEditing: true });
 
     const itemMenu = menuRef.current;
-    const nameInput = itemMenu.querySelectorAll('input[type = "text"]');
-    const renameInput = nameInput[activeDot];
+    const nameInput = itemMenu.querySelector('input[type = "text"]');
 
-    renameInput.select();
-    renameInput.focus();
+    nameInput.select();
+    nameInput.focus();
   };
 
   const handleDelete = () => {
-    setProjects((projects) => {
-      return projects.map((project) => {
-        if (projects[activeDot] && projects[activeDot].id == project.id) {
-          return { ...project, dotClicked: false, isDeleting: true };
-        }
-        return { ...project };
-      });
-    });
+    setProjectUpdate({ ...projectUpdate, dotClicked: false, isDeleting: true });
   };
 
   return (

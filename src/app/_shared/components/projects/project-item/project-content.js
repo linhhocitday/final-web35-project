@@ -74,6 +74,8 @@ export default function ProjectContent() {
     ]);
 
     setCreatingResource(false);
+
+    console.log(resourceAdd);
   };
 
   const handleAddResource = () => {

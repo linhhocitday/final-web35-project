@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import style from "./SignIn.module.css";
 import { z } from "zod";
@@ -19,9 +19,14 @@ const signInForm = z.object({
 
 export default function SignInForm() {
   const router = useRouter();
-  // const handleSignIn = () => {
-  //   location.href = "/projects";
-  // };
+
+  useEffect(() => {
+    const token = JSON.parse(localStorage.getItem("token"));
+
+    if (token) {
+      redirect("/projects");
+    }
+  }, []);
 
   const {
     register,
@@ -46,11 +51,7 @@ export default function SignInForm() {
     result = await result.json();
 
     localStorage.setItem("token", JSON.stringify(result.token));
-    localStorage.setItem("userId", JSON.stringify(result.userId));
 
-    console.log(result);
-
-    // location.href = "/projects";
     router.push("/projects");
   }
 

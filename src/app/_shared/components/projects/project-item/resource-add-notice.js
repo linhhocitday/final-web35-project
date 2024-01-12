@@ -107,7 +107,6 @@ export default function ResourceAddNotice({
   };
 
   const handleAddData = () => {
-    console.log(resourceAdd);
     const key = Date.now().toString(36) + Math.random().toString(36).substr(2);
 
     setResourceAdd({

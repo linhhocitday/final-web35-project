@@ -1,7 +1,18 @@
-import React from "react";
+"use client";
+
+import React, { useEffect } from "react";
 import style from "./Home.module.css";
+import { redirect } from "next/navigation";
 
 export default function HomePageBg() {
+  useEffect(() => {
+    const token = JSON.parse(localStorage.getItem("token"));
+
+    if (token) {
+      redirect("/projects");
+    }
+  }, []);
+
   return (
     <div className="left-col relative">
       <div className="absolute img-wrapper">

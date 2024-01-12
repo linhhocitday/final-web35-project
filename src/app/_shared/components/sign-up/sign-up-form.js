@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import style from "./SignUp.module.css";
 import { z } from "zod";
@@ -30,9 +30,13 @@ const signUpForm = z
   });
 
 export default function SignUpForm() {
-  // const handleSignIn = () => {
-  //   location.href = "/projects";
-  // };
+  useEffect(() => {
+    const token = JSON.parse(localStorage.getItem("token"));
+
+    if (token) {
+      redirect("/projects");
+    }
+  }, []);
 
   const {
     register,
@@ -58,9 +62,6 @@ export default function SignUpForm() {
     result = await result.json();
 
     localStorage.setItem("token", JSON.stringify(result.token));
-    localStorage.setItem("userId", JSON.stringify(result.userId));
-
-    console.log(result);
 
     location.href = "/projects";
   }

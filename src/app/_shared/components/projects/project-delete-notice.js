@@ -1,23 +1,21 @@
 import { useEffect, useRef } from "react";
 import style from "./Projects.module.css";
 import { useProjectsContext } from "../../hooks/useProjectsContext";
+import { baseURL } from "../../constant/constant";
 
-export default function DeleteNotice({ project }) {
-  const { projects, setProjects } = useProjectsContext();
+export default function DeleteNotice({
+  project,
+  projectUpdate,
+  setProjectUpdate,
+}) {
+  const { apiProjects, setApiProjects } = useProjectsContext();
 
   const deleteRef = useRef();
 
   useEffect(() => {
     const handler = (e) => {
       if (deleteRef && !deleteRef.current.contains(e.target)) {
-        setProjects((projects) => {
-          return projects.map((p) => {
-            if (project && project.id == p.id) {
-              return { ...p, isDeleting: false };
-            }
-            return { ...p };
-          });
-        });
+        handleCancel();
       }
     };
 
@@ -29,18 +27,24 @@ export default function DeleteNotice({ project }) {
   });
 
   const handleCancel = () => {
-    setProjects((projects) => {
-      return projects.map((p) => {
-        if (project && project.id == p.id) {
-          return { ...p, isDeleting: false };
-        }
-        return { ...p };
-      });
-    });
+    setProjectUpdate({ ...projectUpdate, isDeleting: false });
   };
 
-  const handleDelete = () => {
-    setProjects((projects) => projects.filter((p) => p.id != project.id));
+  const handleDelete = async () => {
+    setProjectUpdate({ ...projectUpdate, isDeleting: false });
+
+    const token = JSON.parse(localStorage.getItem("token"));
+
+    let result = await fetch(`${baseURL}/api/v1/projects/${project.id}`, {
+      method: "DELETE",
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+
+    // result = await result.json();
+
+    console.log(result);
   };
 
   return (
