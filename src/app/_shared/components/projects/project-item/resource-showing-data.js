@@ -32,7 +32,7 @@ const ResourceShowData = ({ setShowingData, resource }) => {
     for (const [key, value] of Object.entries(data)) {
       render.push(
         <div key={key}>
-          "{key}": "{value}"
+          &quot;{key}&quot;: &quot;{value}&quot;
         </div>
       );
     }
