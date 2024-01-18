@@ -29,9 +29,10 @@ export default function ProjectList() {
         },
       });
 
-      result = await result.json();
-
-      setApiProjects(result);
+      if (result.status === 200) {
+        const project = await result.json();
+        setApiProjects(project);
+      }
     }
 
     getProjects();
@@ -63,9 +64,13 @@ export default function ProjectList() {
       }),
     });
 
-    result = await result.json();
+    const createdProject = await result.json();
 
-    setApiProjects([...apiProjects, result]);
+    if (result.status === 201) {
+      setApiProjects([createdProject, ...apiProjects]);
+    } else {
+      console.log("error");
+    }
 
     setIsAdding(false);
   };

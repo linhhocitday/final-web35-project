@@ -1,12 +1,9 @@
 "use client";
 
-import { useProjectsContext } from "../../hooks/useProjectsContext";
 import style from "./Projects.module.css";
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 export default function ProjectsAdd({ setIsAdding }) {
-  const { apiProjects, setApiProjects } = useProjectsContext();
-
   const clicked = () => {
     setIsAdding(true);
   };

@@ -1,72 +1,76 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import style from "./ProjectItem.module.css";
+import { baseURL } from "@/app/_shared/constant/constant";
+import { usePathname } from "next/navigation";
+import SchemaEditingName from "./schema-editing-name";
 
-const initialData = [
-  { id: 1, name: "id", type: "Object ID" },
-  { id: 2, name: "createAt", type: "Faker.js", fakerMethod: "data.recent" },
-  { id: 3, name: "name", type: "Faker.js", fakerMethod: "name.fullName" },
-  { id: 4, name: "avatar", type: "Faker.js", fakerMethod: "image.avatar" },
-];
+const ResourceEditingSchemas = ({
+  setEditingSchemas,
+  resource,
+  createData,
+  setResources,
+}) => {
+  const pathname = usePathname();
 
-export default function ResourceAddNotice({
-  handleCreatingResource,
-  setCreatingResource,
-}) {
-  const [resourceName, setResourceName] = useState("");
-  const [resourceSchema, setResourceSchema] = useState(initialData);
+  const resourceSchemas = resource.schemas;
+
+  const [updatedSchemas, setUpdatedSchemas] = useState(resourceSchemas);
   const [blankSchemaName, setBlankSchemaName] = useState();
+  const [editingNameSchema, setEditingNameSchema] = useState();
+
+  useEffect(() => {
+    setUpdatedSchemas((schemas) => {
+      return schemas.map((schema) => {
+        const id =
+          Date.now().toString(36) + Math.random().toString(36).substr(2);
+
+        return { id: id, ...schema };
+      });
+    });
+  }, []);
+
+  useEffect(() => {
+    const blank = updatedSchemas.find((schema) => schema.name == "");
+
+    setBlankSchemaName(blank);
+  }, [updatedSchemas]);
 
   const fakerJs = ["data.recent", "name.fullName", "image.avatar"];
 
-  const createRef = useRef();
-
-  useEffect(() => {
-    const handler = (e) => {
-      if (createRef && !createRef.current.contains(e.target)) {
-        handleCancel();
-      }
-    };
-
-    document.addEventListener("mouseup", handler);
-
-    return () => {
-      document.removeEventListener("mouseup", handler);
-    };
-  });
-
-  useEffect(() => {
-    const blank = resourceSchema.find((resource) => resource.name == "");
-
-    setBlankSchemaName(blank);
-  }, [resourceSchema]);
-
   const handleCancel = () => {
-    setCreatingResource(false);
+    setEditingSchemas(false);
+
+    console.log(updatedSchemas);
   };
 
-  const handleSetNewName = (e) => {
-    setResourceName(e.target.value);
+  const handleSetEditingName = (name) => {
+    // const currentSchema = updatedSchemas.find((schema) => schema.name == name);
+    // setEditingNameSchema(currentSchema.id);
   };
 
-  const handleChangeDataName = (e, id) => {
-    setResourceSchema((schema) => {
-      return schema.map((s) => {
-        if (s.id == id) {
-          return { ...s, name: e.target.value };
-        }
-
-        return { ...s };
-      });
-    });
+  const handleChangeSchemaName = (e, schemaNameRef) => {
+    // const newName = e.target.value;
+    // let nameInput = schemaNameRef.current;
+    // nameInput.value = newName;
+    // setUpdatedSchemas((schemas) => {
+    //   return schemas.map((schema) => {
+    //     if (schema.id == editingNameSchema) {
+    //       console.log(schema.id);
+    //       return { ...schema, name: newName };
+    //     }
+    //     return { ...schema };
+    //   });
+    // });
+    // console.log(updatedSchemas);
   };
 
-  const handleChangeDataType = (e, id) => {
+  const handleChangeSchemaType = (e, name) => {
     if (e.target.value === "Faker.js") {
-      setResourceSchema((schema) => {
+      setUpdatedSchemas((schema) => {
         return schema.map((s) => {
-          if (s.id == id) {
+          if (s.name == name) {
             return { ...s, type: e.target.value, fakerMethod: fakerJs[0] };
           }
 
@@ -74,9 +78,9 @@ export default function ResourceAddNotice({
         });
       });
     } else {
-      setResourceSchema((schema) => {
+      setUpdatedSchemas((schema) => {
         return schema.map((s) => {
-          if (s.id == id) {
+          if (s.name == name) {
             return { ...s, type: e.target.value, fakerMethod: "" };
           }
 
@@ -86,10 +90,10 @@ export default function ResourceAddNotice({
     }
   };
 
-  const handleChangeFakerMethod = (e, id) => {
-    setResourceSchema((schema) => {
+  const handleChangeFakerMethod = (e, name) => {
+    setUpdatedSchemas((schema) => {
       return schema.map((s) => {
-        if (s.id == id) {
+        if (s.name == name) {
           return { ...s, fakerMethod: e.target.value };
         }
 
@@ -99,22 +103,78 @@ export default function ResourceAddNotice({
   };
 
   const handleAddData = () => {
-    const id = Date.now().toString(36) + Math.random().toString(36).substr(2);
+    console.log("edit add schema");
+  };
 
-    setResourceSchema([
-      ...resourceSchema,
+  const handleUpdateSchemas = async () => {
+    const idFromPathname = pathname.split("/").pop();
+
+    const updatedResource = {
+      name: resource.name,
+      schemas: updatedSchemas,
+      data: resource.data,
+    };
+
+    const token = JSON.parse(localStorage.getItem("token"));
+
+    let result = await fetch(
+      `${baseURL}/api/v1/projects/${idFromPathname}/resources/${resource.id}`,
       {
-        id: id,
-        name: "",
-        type: "Faker.js",
-        fakerMethod: fakerJs[0],
-      },
-    ]);
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(updatedResource),
+      }
+    );
+
+    handleCancel();
+
+    if (result.status === 200) {
+      const data = createData(resource.data.length, updatedSchemas);
+
+      const updatedData = {
+        name: resource.name,
+        schemas: updatedSchemas,
+        data: data,
+      };
+
+      let dataResult = await fetch(
+        `${baseURL}/api/v1/projects/${idFromPathname}/resources/${resource.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(updatedData),
+        }
+      );
+
+      if (dataResult.status === 200) {
+        setResources((resources) => {
+          return resources.map((r) => {
+            if (r.id == resource.id) {
+              return { id: resource.id, ...updatedData };
+            }
+
+            return { ...r };
+          });
+        });
+      } else {
+        alert("Can not update resource");
+      }
+    } else {
+      alert("Can not update resource");
+    }
   };
 
   return (
-    <div className={style.resourceAddNoticeBg}>
-      <div className={style.resourceAddNoticeContainer} ref={createRef}>
+    <div>
+      <div className={style.resourceAddNoticeBg} onClick={handleCancel}></div>
+
+      <div className={style.resourceShowDataContainer}>
         <div className={style.resourceAddNoticeTitle}>
           <div className={style.xIcon} onClick={handleCancel}>
             <svg
@@ -132,60 +192,47 @@ export default function ResourceAddNotice({
           </div>
 
           <p className={style.createResourceTitle}>
-            New <span>resource</span>
+            Schema <span>(optional)</span>
           </p>
         </div>
 
         <div className={style.ResourceAddNoticeContent}>
           <div className={style.createResourceContainer}>
-            <p className={style.createResourceSubTitle}>Resource name</p>
-            <p className={style.createResourceDescribe}>
-              Enter meaningful resource name, it will be used to{" "}
-              <span>generate API endpoints.</span>
-            </p>
-
-            <input
-              className={style.createResourceNameInput}
-              type="text"
-              value={resourceName}
-              onChange={(e) => handleSetNewName(e)}
-            />
-          </div>
-
-          <div className={style.createResourceContainer}>
-            <p className={style.createResourceSubTitle}>Schema</p>
-            <p className={style.createResourceDescribe}>
-              Define Resource schema, it will be used to{" "}
-              <span>generate mock data.</span>
-            </p>
-
             <ul>
-              {resourceSchema.map((data) => (
+              {updatedSchemas.map((schema) => (
                 <li
-                  key={data.id}
+                  key={schema.name}
                   className={style.createResourceSchemaContainer}
                 >
-                  <input
+                  {/* <input
                     type="text"
-                    value={data.name}
+                    value={schema.name}
                     className={style.dataName}
-                    onChange={(e) => handleChangeDataName(e, data.id)}
+                    // onClick={() => handleSetEditingName(schema.name)}
+                    onChange={(e) => handleChangeSchemaName(e)}
+                    ref={schemaNameRef}
                     placeholder="Field name"
+                  /> */}
+
+                  <SchemaEditingName
+                    schema={schema}
+                    handleChangeSchemaName={handleChangeSchemaName}
+                    handleSetEditingName={handleSetEditingName}
                   />
 
-                  {data.type === "Object ID" ? (
+                  {schema.type === "Object ID" ? (
                     <input
-                      value={data.type}
+                      value={schema.type}
                       className={style.dataTypes}
                       readOnly
                       disabled
                     />
                   ) : (
                     <select
-                      id={`data-types${data.id}`}
+                      id={`data-types${schema.name}`}
                       className={style.dataTypes}
-                      value={data.type}
-                      onChange={(e) => handleChangeDataType(e, data.id)}
+                      value={schema.type}
+                      onChange={(e) => handleChangeSchemaType(e, schema.name)}
                     >
                       <option value="Faker.js">Faker.js</option>
                       <option value="String">String</option>
@@ -197,15 +244,15 @@ export default function ResourceAddNotice({
                     </select>
                   )}
 
-                  {data.type === "Faker.js" && (
+                  {schema.type === "Faker.js" && (
                     <select
-                      id={`faker-method${data.id}`}
+                      id={`faker-method${schema.name}`}
                       className={style.dataTypes}
-                      value={data.fakerMethod}
-                      onChange={(e) => handleChangeFakerMethod(e, data.id)}
+                      value={schema.fakerMethod}
+                      onChange={(e) => handleChangeFakerMethod(e, schema.name)}
                     >
                       {fakerJs.map((faker) => (
-                        <option key={data.id + faker} value={faker}>
+                        <option key={schema.name + faker} value={faker}>
                           {faker}
                         </option>
                       ))}
@@ -242,26 +289,22 @@ export default function ResourceAddNotice({
             Cancel
           </button>
 
-          {!resourceName ? (
+          {blankSchemaName ? (
             <button disabled className={style.createResourceBtn}>
-              Create
-            </button>
-          ) : blankSchemaName ? (
-            <button disabled className={style.createResourceBtn}>
-              Create
+              Update
             </button>
           ) : (
             <button
-              onClick={() =>
-                handleCreatingResource(resourceName, resourceSchema)
-              }
+              onClick={() => handleUpdateSchemas()}
               className={style.createResourceBtn}
             >
-              Create
+              Update
             </button>
           )}
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default ResourceEditingSchemas;

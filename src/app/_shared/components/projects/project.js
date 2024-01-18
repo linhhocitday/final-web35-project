@@ -67,6 +67,14 @@ const Project = ({ project }) => {
     }
   };
 
+  const date = () => {
+    const d = new Date(project.createdAt);
+
+    const formedDate = `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
+
+    return formedDate;
+  };
+
   return (
     <div className={style.projectContainer} ref={menuRef}>
       <Link
@@ -77,7 +85,7 @@ const Project = ({ project }) => {
       >
         <div className="flexbox flex-column flex-justify height-100">
           <div>
-            <p className={style.createdAt}>{project.createdAt}</p>
+            <p className={style.createdAt}>{date()}</p>
 
             {projectUpdate.isEditing ? (
               <input

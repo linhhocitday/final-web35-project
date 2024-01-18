@@ -145,7 +145,7 @@ input.resourceNameInput[data-rename="true"] {
 
 .resourceDataContainer {
   height: 36px;
-  width: 204px;
+  width: 404px;
   padding: 2px;
   border-radius: 8px;
   background-color: #eef8f6;
@@ -155,9 +155,9 @@ input.resourceNameInput[data-rename="true"] {
 
 .resourceDataQuantity {
   height: 100%;
-  /* width: 100%; */
   background-color: #64ccc5;
   border-radius: 8px;
+  transition: 0.4s ease-out;
 }
 
 .resourceContentWrapper {
@@ -323,6 +323,11 @@ input.resourceNameInput[data-rename="true"] {
   border: none;
 }
 
+button.createResourceBtn:disabled {
+  background-color: #4593ac;
+  color: #7cb4c7;
+}
+
 .cancelCreateResourceBtn {
   background-color: #fff;
   padding: 10px;
@@ -381,4 +386,51 @@ input.resourceNameInput[data-rename="true"] {
   background-color: #ebfffe;
   color: #6bb2ca;
   cursor: no-drop;
+}
+
+.resourceShowDataContainer {
+  background-color: #fff;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 111111111111;
+  /* padding: 24px; */
+  max-width: 800px;
+  width: 100%;
+  border-radius: 16px;
+  max-height: 80vh;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.resourceShowDataSubTitle {
+  text-align: center;
+  font-size: 14px;
+  /* margin: 12px 6px 0; */
+}
+
+.resourceShowDataSubTitle span {
+  color: #64ccc5;
+}
+
+.dataContainer {
+  background-color: #eef8f6;
+  margin: 24px;
+  margin-top: 0;
+  padding: 24px;
+  height: 80%;
+  overflow-y: auto;
+  border-radius: 16px;
+}
+
+.dataAngleBrackets {
+  padding-left: 12px;
+}
+
+.renderedData {
+  padding-left: 24px;
 }

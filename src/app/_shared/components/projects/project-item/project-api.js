@@ -1,11 +1,23 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import style from "./ProjectItem.module.css";
+import { baseURL } from "@/app/_shared/constant/constant";
+import { usePathname } from "next/navigation";
 
 export default function ProjectApi() {
-  const [api, setApi] = useState("https://648704a8beba6297278faca3.mockapi.io");
+  const [api, setApi] = useState();
   const [copied, setCopied] = useState(false);
+
+  const pathname = usePathname();
+
+  useEffect(() => {
+    const idFromPathname = pathname.split("/").pop();
+
+    const mockApi = `${baseURL}/api/fakeapi/${idFromPathname}`;
+
+    setApi(mockApi);
+  }, []);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(api);

@@ -42,9 +42,9 @@ export default function DeleteNotice({
       },
     });
 
-    // result = await result.json();
-
-    console.log(result);
+    setApiProjects((apiProjects) => {
+      return apiProjects.filter((p) => p.id !== project.id);
+    });
   };
 
   return (

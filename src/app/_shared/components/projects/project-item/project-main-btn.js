@@ -2,7 +2,10 @@
 
 import style from "./ProjectItem.module.css";
 
-export default function MainButtons({ handleAddResource }) {
+export default function MainButtons({
+  handleAddResource,
+  handleGenerateResources,
+}) {
   return (
     <div className={style.mainBtnContainer}>
       <div className="flexbox flex-align-justify">
@@ -11,11 +14,17 @@ export default function MainButtons({ handleAddResource }) {
         </button>
 
         <div className={style.gridBtn}>
-          <button className={style.secondaryBtn}>
+          <button
+            className={style.secondaryBtn}
+            onClick={() => handleGenerateResources(50)}
+          >
             <div className="uppercase color-176B87">Generate all</div>
           </button>
 
-          <button className={style.secondaryBtn}>
+          <button
+            className={style.secondaryBtn}
+            onClick={() => handleGenerateResources(0)}
+          >
             <div className="uppercase color-176B87">Reset all</div>
           </button>
         </div>

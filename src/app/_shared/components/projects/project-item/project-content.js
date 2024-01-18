@@ -1,147 +1,371 @@
 "use client";
 
-import { data } from "autoprefixer";
 import style from "./ProjectItem.module.css";
 import ProjectApi from "./project-api";
 import MainButtons from "./project-main-btn";
 import { useEffect, useRef, useState } from "react";
 import ResourceAddNotice from "./resource-add-notice";
+import { baseURL } from "@/app/_shared/constant/constant";
+import { usePathname } from "next/navigation";
+import ResourceDataNumber from "./resource-data-number";
+import { faker } from "@faker-js/faker";
+import ObjectID from "bson-objectid";
+import ResourceShowData from "./resource-showing-data";
+import ResourceName from "./resource-name";
+import ResourceEditingSchemas from "./resource-editing-schemas";
 
 export default function ProjectContent() {
-  const [resources, setResource] = useState([
-    // {
-    //   id: 1,
-    //   name: "Untitled",
-    //   data: [
-    //     { id: 1, name: "Linh" },
-    //     { id: 2, name: "Dang" },
-    //   ],
-    // },
-  ]);
-  const [untitled, setUntitled] = useState(1);
-
+  const [resources, setResources] = useState([]);
   const [creatingResource, setCreatingResource] = useState(false);
+  const [projectId, setProjectId] = useState();
+  const [showingData, setShowingData] = useState(false);
+  const [editingSchemas, setEditingSchemas] = useState(false);
+  const [willRenderData, setWillRenderData] = useState([]);
+  const [willEditSchemas, setWillEditSchemas] = useState([]);
+  const [resourceNewName, setResourceNewName] = useState("");
+
+  const pathname = usePathname();
 
   const resourcesRef = useRef();
 
+  // useEffect(() => {
+  //   const handler = (e) => {
+  //     const currentResource = resourcesRef.current;
+  //     const nameInput = currentResource.querySelector(
+  //       'input[data-rename = "true"]'
+  //     );
+
+  //     if (nameInput && !nameInput.contains(e.target)) {
+  //       const editingIndex = resources.findIndex(
+  //         (resource) => resource.nameEditing == true
+  //       );
+
+  //       setResources((resources) => {
+  //         return resources.map((resource) => {
+  //           if (resource.id == resources[editingIndex].id) {
+  //             return {
+  //               ...resource,
+  //               nameEditing: false,
+  //             };
+  //           }
+
+  //           return { ...resource };
+  //         });
+  //       });
+  //     }
+  //   };
+
+  //   document.addEventListener("mouseup", handler);
+
+  //   return () => {
+  //     document.removeEventListener("mouseup", handler);
+  //   };
+  // });
+
   useEffect(() => {
-    const handler = (e) => {
-      const currentResource = resourcesRef.current;
-      const nameInput = currentResource.querySelector(
-        'input[data-rename = "true"]'
+    const idFromPathname = pathname.split("/").pop();
+
+    setProjectId(idFromPathname);
+
+    const token = JSON.parse(localStorage.getItem("token"));
+
+    if (!token) {
+      redirect("/");
+    }
+
+    async function getProjects() {
+      let result = await fetch(
+        `${baseURL}/api/v1/projects/${idFromPathname}/resources`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
-      if (nameInput && !nameInput.contains(e.target)) {
-        const editingIndex = resources.findIndex(
-          (resource) => resource.nameEditing == true
-        );
+      result = await result.json();
 
-        setResource((resources) => {
+      setResources(result);
+    }
+
+    getProjects();
+  }, []);
+
+  const handleCreatingResource = async (resourceName, resourceSchema) => {
+    const newResource = {
+      name: resourceName,
+      data: [],
+      schemas: resourceSchema,
+    };
+
+    const token = JSON.parse(localStorage.getItem("token"));
+
+    let result = await fetch(
+      `${baseURL}/api/v1/projects/${projectId}/resources`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(newResource),
+      }
+    );
+
+    const createdProject = await result.json();
+
+    if (result.status === 201) {
+      setResources([createdProject, ...resources]);
+    } else {
+      console.log("error");
+    }
+
+    setCreatingResource(false);
+  };
+
+  const handleGenerateResources = async (n) => {
+    for (let i = 0; i < resources.length; i++) {
+      const data = createData(n, resources[i].schemas);
+
+      const updatedResource = {
+        name: resources[i].name,
+        schemas: resources[i].schemas,
+        data: data,
+      };
+
+      const token = JSON.parse(localStorage.getItem("token"));
+
+      let result = await fetch(
+        `${baseURL}/api/v1/projects/${projectId}/resources/${resources[i].id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(updatedResource),
+        }
+      );
+
+      if (result.status === 200) {
+        setResources((resources) => {
           return resources.map((resource) => {
-            if (resource.id == resources[editingIndex].id) {
-              return {
-                ...resource,
-                nameEditing: false,
-              };
+            if (resource.id == resources[i].id) {
+              return { id: resources[i].id, ...updatedResource };
             }
 
             return { ...resource };
           });
         });
       }
-    };
-
-    document.addEventListener("mouseup", handler);
-
-    return () => {
-      document.removeEventListener("mouseup", handler);
-    };
-  });
-
-  const handleCreatingResource = (resourceAdd) => {
-    const id = Date.now().toString(36) + Math.random().toString(36).substr(2);
-
-    setUntitled(untitled + 1);
-
-    setResource([
-      {
-        id: id,
-        name: resourceAdd.name,
-        data: [],
-        nameEditing: false,
-      },
-      ...resources,
-    ]);
-
-    setCreatingResource(false);
-
-    console.log(resourceAdd);
+    }
   };
 
   const handleAddResource = () => {
     setCreatingResource(true);
   };
 
-  const handleRename = (id) => {
-    const renameId = resources.findIndex((resource) => resource.id == id);
+  // const handleRename = (id) => {
+  //   const renameId = resources.findIndex((resource) => resource.id == id);
 
-    const currentResource = resourcesRef.current;
-    const nameInput = currentResource.querySelectorAll('input[type = "text"]');
+  //   const currentResource = resourcesRef.current;
+  //   const nameInput = currentResource.querySelectorAll('input[type = "text"]');
 
-    const editingResource = nameInput[renameId];
+  //   const editingResource = nameInput[renameId];
 
-    editingResource.select();
-    editingResource.focus();
+  //   editingResource.select();
+  //   editingResource.focus();
 
-    setResource((resources) => {
-      return resources.map((resource) => {
-        if (resource.id == id) {
-          return {
-            ...resource,
-            nameEditing: true,
-          };
-        }
+  //   setResources((resources) => {
+  //     return resources.map((resource) => {
+  //       if (resource.id == id) {
+  //         return {
+  //           ...resource,
+  //           nameEditing: true,
+  //         };
+  //       }
 
-        return { ...resource };
-      });
-    });
+  //       return { ...resource };
+  //     });
+  //   });
+
+  //   console.log(resources);
+  // };
+
+  const handleEditingName = (e, nameRef) => {
+    const newName = e.target.value;
+
+    const nameContainer = nameRef.current;
+    const nameInput = nameContainer.querySelector('input[type="text"]');
+
+    nameInput.value = newName;
+    setResourceNewName(newName);
   };
 
-  const handleEditingName = (e, id) => {
-    setResource((resources) => {
-      return resources.map((resource) => {
-        if (resource.id == id) {
-          return { ...resource, name: e.target.value };
-        }
-
-        return { ...resource };
-      });
-    });
-  };
-
-  const handleEnter = (e, id) => {
-    const editingIndex = resources.findIndex(
-      (resource) => resource.nameEditing == true
-    );
-
-    const currentResource = resourcesRef.current;
-    const nameInput = currentResource.querySelector(
-      'input[data-rename = "true"]'
-    );
+  const handleEnter = async (e, currentResource, setNameEditing, nameRef) => {
+    const nameContainer = nameRef.current;
+    const nameInput = nameContainer.querySelector('input[data-rename="true"]');
 
     if (e.keyCode === 13) {
-      setResource((resources) => {
+      if (resourceNewName == "") {
+        setNameEditing(false);
+
+        nameInput.blur();
+      } else {
+        const updatedResource = {
+          name: resourceNewName,
+          schemas: currentResource.schemas,
+          data: currentResource.data,
+        };
+
+        const token = JSON.parse(localStorage.getItem("token"));
+
+        let result = await fetch(
+          `${baseURL}/api/v1/projects/${projectId}/resources/${currentResource.id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(updatedResource),
+          }
+        );
+
+        if (result.status === 200) {
+          setResources((resources) => {
+            return resources.map((resource) => {
+              if (resource.id == currentResource.id) {
+                return { ...resource, name: resourceNewName };
+              }
+
+              return { ...resource };
+            });
+          });
+
+          setNameEditing(false);
+
+          nameInput.blur();
+        }
+      }
+    }
+  };
+
+  function createData(n, schemas) {
+    let data = [];
+
+    for (let i = 0; i < n; i++) {
+      const id = ObjectID().toHexString();
+
+      let element = {};
+
+      if (schemas) {
+        for (let j = 0; j < schemas.length; j++) {
+          let schema = schemas[j];
+
+          let schemaId = schema.id;
+          let schemaName = schema.name;
+          let schemaType = schema.type;
+          let schemaMethod = schema.fakerMethod;
+
+          if (schemaType == "Object ID") {
+            element[schemaName] = id;
+          } else if (schemaType == "Faker.js") {
+            if (schemaMethod == "data.recent") {
+              element[schemaName] = faker.date.past().toString();
+            } else if (schemaMethod == "name.fullName") {
+              element[schemaName] = faker.person.fullName();
+            } else if (schemaMethod == "image.avatar") {
+              element[schemaName] = faker.image.avatar();
+            }
+          }
+        }
+
+        data.push(element);
+      }
+    }
+
+    return data;
+  }
+
+  const handleSetDataNumber = async (event, id, name, schemas, dataRef) => {
+    const dataBar = dataRef.current;
+    const e = dataBar.getBoundingClientRect();
+
+    let posX = Math.floor((event.clientX - e.left) / 4);
+
+    if (posX < 0) {
+      posX = 0;
+    } else if (posX > 100) {
+      posX = 100;
+    }
+
+    const data = createData(posX, schemas);
+
+    const updatedResource = {
+      name: name,
+      schemas: schemas,
+      data: data,
+    };
+
+    const token = JSON.parse(localStorage.getItem("token"));
+
+    let result = await fetch(
+      `${baseURL}/api/v1/projects/${projectId}/resources/${id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(updatedResource),
+      }
+    );
+
+    if (result.status === 200) {
+      setResources((resources) => {
         return resources.map((resource) => {
           if (resource.id == id) {
-            return { ...resource, nameEditing: false };
+            return { id: id, ...updatedResource };
           }
 
           return { ...resource };
         });
       });
-
-      nameInput.blur();
     }
+  };
+
+  const handleDeleteResource = async (id) => {
+    const token = JSON.parse(localStorage.getItem("token"));
+
+    if (confirm("Are you sure you want to delete?")) {
+      let result = await fetch(
+        `${baseURL}/api/v1/projects/${projectId}/resources/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (result.status === 200) {
+        setResources((resources) => {
+          return resources.filter((resource) => resource.id !== id);
+        });
+      }
+    }
+  };
+
+  const handleShowData = (resource) => {
+    setShowingData(true);
+    setWillRenderData(resource);
+  };
+
+  const handleEditSchema = (resource) => {
+    setEditingSchemas(true);
+    setWillEditSchemas(resource);
   };
 
   return (
@@ -151,7 +375,10 @@ export default function ProjectContent() {
 
         <ProjectApi />
 
-        <MainButtons handleAddResource={handleAddResource} />
+        <MainButtons
+          handleAddResource={handleAddResource}
+          handleGenerateResources={handleGenerateResources}
+        />
       </div>
 
       <div className={style.resourcesContainer}>
@@ -163,79 +390,60 @@ export default function ProjectContent() {
               <div className={style.resourceLeftLine}></div>
 
               <div className={style.resourceContainer}>
-                <div className={style.resourceNameContainer}>
-                  {/* <h3 className={style.resourceName}>{resource.name}</h3> */}
-
-                  {/* <span
-                    className={style.resourceNameTextbox}
-                    role="textbox"
-                    contenteditable={resource.nameEditing ? "true" : "false"}
-                  >
-                    {resource.name}
-                  </span> */}
-
-                  {resource.nameEditing ? (
-                    <input
-                      type="text"
-                      value={resource.name}
-                      className={style.resourceNameInput}
-                      onChange={(e) => handleEditingName(e, resource.id)}
-                      onKeyUp={(e) => handleEnter(e, resource.id)}
-                      data-rename="true"
-                    />
-                  ) : (
-                    <input
-                      type="text"
-                      value={resource.name}
-                      className={style.resourceNameInput}
-                      readOnly="readOnly"
-                      data-rename="false"
-                    />
-                  )}
-
-                  <div
-                    className={style.resourceEditNameBtn}
-                    onClick={() => handleRename(resource.id)}
-                  >
-                    <svg
-                      width="18"
-                      height="18"
-                      viewBox="0 0 18 18"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M1 16.7931H17M1 16.7931V12.7931L9 4.79308M1 16.7931L5 16.7931L13 8.79307M9 4.79308L11.8686 1.92443L11.8704 1.92273C12.2652 1.52785 12.463 1.33006 12.691 1.25597C12.8919 1.19072 13.1082 1.19072 13.3091 1.25597C13.5369 1.33 13.7345 1.52757 14.1288 1.92189L15.8686 3.66169C16.2646 4.05771 16.4627 4.25581 16.5369 4.48413C16.6022 4.68498 16.6021 4.90132 16.5369 5.10217C16.4628 5.33033 16.265 5.52813 15.8695 5.92358L15.8686 5.92443L13 8.79307M9 4.79308L13 8.79307"
-                        stroke="#64CCC5"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </div>
-                </div>
+                <ResourceName
+                  resource={resource}
+                  handleEditingName={handleEditingName}
+                  handleEnter={handleEnter}
+                  resources={resources}
+                  setResources={setResources}
+                  resourceNewName={resourceNewName}
+                />
 
                 <div className={style.resourceContentWrapper}>
-                  <div className={style.resourceDataContainer}>
-                    <div
-                      className={style.resourceDataQuantity}
-                      style={{ width: `${resource.data.length}%` }}
-                    ></div>
-
-                    <div className={style.resourceData}>
-                      {resource.data.length}
-                    </div>
-                  </div>
+                  <ResourceDataNumber
+                    handleSetDataNumber={handleSetDataNumber}
+                    resource={resource}
+                  />
 
                   <div className={style.resourceBtnContainer}>
-                    <button className={style.lowEmphasisBtn}>Data</button>
+                    <button
+                      className={style.lowEmphasisBtn}
+                      onClick={() => handleShowData(resource)}
+                    >
+                      Data
+                    </button>
 
-                    <button className={style.lowEmphasisBtn}>Edit</button>
+                    <button
+                      className={style.lowEmphasisBtn}
+                      onClick={() => handleEditSchema(resource)}
+                    >
+                      Edit
+                    </button>
 
-                    <button className={style.lowEmphasisBtn}>Delete</button>
+                    <button
+                      className={style.lowEmphasisBtn}
+                      onClick={() => handleDeleteResource(resource.id)}
+                    >
+                      Delete
+                    </button>
                   </div>
                 </div>
               </div>
+              {showingData && (
+                <ResourceShowData
+                  setShowingData={setShowingData}
+                  resource={willRenderData}
+                />
+              )}
+
+              {editingSchemas && (
+                <ResourceEditingSchemas
+                  setEditingSchemas={setEditingSchemas}
+                  resource={willEditSchemas}
+                  createData={createData}
+                  setResources={setResources}
+                />
+              )}
             </div>
           ))}
         </div>
@@ -245,7 +453,6 @@ export default function ProjectContent() {
         <ResourceAddNotice
           handleCreatingResource={handleCreatingResource}
           setCreatingResource={setCreatingResource}
-          untitled={untitled}
         />
       )}
     </div>

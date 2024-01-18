@@ -8,6 +8,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { baseURL } from "../../constant/constant";
+import { redirect } from "next/navigation";
 
 const signInForm = z.object({
   email: z.string().trim().email(),
@@ -21,7 +22,11 @@ export default function SignInForm() {
   const router = useRouter();
 
   useEffect(() => {
-    const token = JSON.parse(localStorage.getItem("token"));
+    let token;
+
+    if (localStorage.getItem("token")) {
+      token = JSON.parse(localStorage.getItem("token"));
+    }
 
     if (token) {
       redirect("/projects");
@@ -48,11 +53,15 @@ export default function SignInForm() {
       }),
     });
 
-    result = await result.json();
+    if (result.status == 200) {
+      result = await result.json();
 
-    localStorage.setItem("token", JSON.stringify(result.token));
+      localStorage.setItem("token", JSON.stringify(result.token));
 
-    router.push("/projects");
+      router.push("/projects");
+    } else {
+      alert("error");
+    }
   }
 
   return (
