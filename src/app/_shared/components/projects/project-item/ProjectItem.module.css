@@ -434,3 +434,85 @@ button.createResourceBtn:disabled {
 .renderedData {
   padding-left: 24px;
 }
+
+.deleteNoticeBg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgb(0, 27, 46, 0.2);
+  backdrop-filter: blur(2px);
+  z-index: 1111;
+  cursor: auto;
+}
+
+.deleteNoticeContainer {
+  background-color: #fff;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 16px;
+  padding: 24px;
+  text-align: center;
+  width: 600px;
+  z-index: 111111;
+}
+
+.deleteTitle {
+  font-size: 20px;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: #176b87;
+  margin: 20px 6px 12px;
+}
+
+.deleteTitle > span,
+.deleteSubTitle > span {
+  color: #64ccc5;
+}
+
+.deleteSubTitle {
+  font-size: 14px;
+  margin-bottom: 32px;
+}
+.xIcon {
+  text-align: right;
+  padding: 12px;
+  margin: -12px;
+  cursor: pointer;
+}
+
+.deleteButtons {
+  max-width: 600px;
+  width: 100%;
+}
+
+.deleteButtons > div {
+  grid-template: auto / repeat(2, 1fr);
+  gap: 12px;
+}
+
+.primaryBtn {
+  background-color: #176b87;
+  padding: 12px;
+  border-radius: 8px;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
+  box-shadow: 0 4px 12px 0 rgba(100, 204, 197, 0.6);
+  cursor: pointer;
+}
+
+.secondaryBtn {
+  padding: 10px;
+  border-radius: 8px;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 500;
+  color: #64ccc5;
+  border: solid 1px #64ccc5;
+  cursor: pointer;
+}

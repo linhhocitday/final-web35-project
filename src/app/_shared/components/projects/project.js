@@ -7,6 +7,7 @@ import ProjectDotsBtn from "./project-menu-btn";
 import ProjectFunctionBtn from "./project-function-btn";
 import DeleteNotice from "./project-delete-notice";
 import { useProjectsContext } from "../../hooks/useProjectsContext";
+import { baseURL } from "@/app/_shared/constant/constant";
 
 const projectState = {
   dotClicked: false,
@@ -18,8 +19,31 @@ const Project = ({ project }) => {
   const { handleRename } = useProjectsContext();
 
   const [projectUpdate, setProjectUpdate] = useState(projectState);
+  const [resources, setResources] = useState([]);
 
   const menuRef = useRef();
+
+  useEffect(() => {
+    const token = JSON.parse(localStorage.getItem("token"));
+
+    async function getProjects() {
+      let result = await fetch(
+        `${baseURL}/api/v1/projects/${project.id}/resources`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      result = await result.json();
+
+      setResources(result);
+    }
+
+    getProjects();
+  }, []);
 
   useEffect(() => {
     const handler = (e) => {
@@ -107,7 +131,7 @@ const Project = ({ project }) => {
             )}
           </div>
 
-          <div>{!project.resources ? 0 : project.resources} resources</div>
+          <div>{!resources ? 0 : resources.length} resources</div>
         </div>
       </Link>
 

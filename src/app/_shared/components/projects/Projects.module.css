@@ -137,6 +137,7 @@
   border-radius: 16px;
   padding: 24px;
   text-align: center;
+  width: 600px;
 }
 
 .deleteTitle {
@@ -194,4 +195,59 @@
   color: #64ccc5;
   border: solid 1px #64ccc5;
   cursor: pointer;
+}
+
+.addProjectNoticeContainer {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  z-index: 111111;
+  padding: 24px;
+  border-radius: 16px;
+  text-align: center;
+  width: 600px;
+}
+
+.addProjectNoticeTitle {
+  text-transform: uppercase;
+  font-size: 20px;
+  font-weight: 500;
+  color: #176b87;
+  margin: 20px 6px 12px;
+}
+
+.addProjectNoticeSubTitle {
+  font-size: 14px;
+  margin-bottom: 32px;
+}
+
+.addProjectNoticeTitle span,
+.addProjectNoticeSubTitle span {
+  color: #64ccc5;
+}
+
+.addProjectNoticeContainer .primaryBtn {
+  border: none;
+  outline: none;
+}
+
+.addProjectNoticeContainer .secondaryBtn {
+  background-color: #fff;
+}
+
+.addProjectNoticeInput {
+  margin-bottom: 20px;
+  padding: 10.8px 20px;
+  outline: none;
+  border: none;
+  border-radius: 8px;
+  background-color: #eef8f6;
+  width: 100%;
+}
+
+button.primaryBtn:disabled {
+  background-color: #4593ac;
+  color: #7cb4c7;
 }

@@ -13,6 +13,8 @@ import ObjectID from "bson-objectid";
 import ResourceShowData from "./resource-showing-data";
 import ResourceName from "./resource-name";
 import ResourceEditingSchemas from "./resource-editing-schemas";
+import { redirect } from "next/navigation";
+import ResourceDeleteNotice from "./resource-delete-notice";
 
 export default function ProjectContent() {
   const [resources, setResources] = useState([]);
@@ -20,8 +22,10 @@ export default function ProjectContent() {
   const [projectId, setProjectId] = useState();
   const [showingData, setShowingData] = useState(false);
   const [editingSchemas, setEditingSchemas] = useState(false);
+  const [deletingResource, setDeletingResource] = useState(false);
   const [willRenderData, setWillRenderData] = useState([]);
   const [willEditSchemas, setWillEditSchemas] = useState([]);
+  const [willDeleteResource, setWillDeleteResource] = useState([]);
   const [resourceNewName, setResourceNewName] = useState("");
 
   const pathname = usePathname();
@@ -125,6 +129,16 @@ export default function ProjectContent() {
   };
 
   const handleGenerateResources = async (n) => {
+    setResources((resources) => {
+      return resources.map((resource) => {
+        if (resource.id == resources[i].id) {
+          return { id: resources[i].id, ...updatedResource };
+        }
+
+        return { ...resource };
+      });
+    });
+
     for (let i = 0; i < resources.length; i++) {
       const data = createData(n, resources[i].schemas);
 
@@ -336,26 +350,29 @@ export default function ProjectContent() {
     }
   };
 
-  const handleDeleteResource = async (id) => {
-    const token = JSON.parse(localStorage.getItem("token"));
+  const handleDeleteResource = async (resource) => {
+    // const token = JSON.parse(localStorage.getItem("token"));
 
-    if (confirm("Are you sure you want to delete?")) {
-      let result = await fetch(
-        `${baseURL}/api/v1/projects/${projectId}/resources/${id}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+    setDeletingResource(true);
+    setWillDeleteResource(resource);
 
-      if (result.status === 200) {
-        setResources((resources) => {
-          return resources.filter((resource) => resource.id !== id);
-        });
-      }
-    }
+    // if (confirm("Are you sure you want to delete?")) {
+    //   let result = await fetch(
+    //     `${baseURL}/api/v1/projects/${projectId}/resources/${id}`,
+    //     {
+    //       method: "DELETE",
+    //       headers: {
+    //         Authorization: `Bearer ${token}`,
+    //       },
+    //     }
+    //   );
+
+    //   if (result.status === 200) {
+    //     setResources((resources) => {
+    //       return resources.filter((resource) => resource.id !== id);
+    //     });
+    //   }
+    // }
   };
 
   const handleShowData = (resource) => {
@@ -422,7 +439,7 @@ export default function ProjectContent() {
 
                     <button
                       className={style.lowEmphasisBtn}
-                      onClick={() => handleDeleteResource(resource.id)}
+                      onClick={() => handleDeleteResource(resource)}
                     >
                       Delete
                     </button>
@@ -442,6 +459,15 @@ export default function ProjectContent() {
                   resource={willEditSchemas}
                   createData={createData}
                   setResources={setResources}
+                />
+              )}
+
+              {deletingResource && (
+                <ResourceDeleteNotice
+                  resource={willDeleteResource}
+                  setDeletingResource={setDeletingResource}
+                  setResources={setResources}
+                  projectId={projectId}
                 />
               )}
             </div>
